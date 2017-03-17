@@ -21,3 +21,4 @@ mysql_port=3306
 db_name = "target_files"
 
 aapt_tool_path = "/home/lcns/bin/adt-bundle-linux-x86_64-20140321/sdk/build-tools/23.0.2/aapt"
+get_sign_key_tool_path = "./get_key.sh"

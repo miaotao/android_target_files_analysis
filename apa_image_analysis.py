@@ -62,21 +62,21 @@ def analysis_apk(buildInfo,apk,apktype,base_dir):
 
   related_apk_name = apk[len(base_dir):]
   package_name = apa_util.get_package_name(apk)
-  #print "package ", package_name
+  print "package ", package_name
   sign_md5,sign_sha1,sign_detail = apa_util.get_apk_sign(apk)
-  #print "Sign MD5", sign_md5
-  #print "Sign SHA1", sign_sha1
+  print "Sign MD5", sign_md5
+  print "Sign SHA1", sign_sha1
   version_code,version_name = apa_util.get_package_version(apk)
-  #print "Version Code", version_code
-  #print "Version Name",version_name
+  print "Version Code", version_code
+  print "Version Name",version_name
   apk_size = apa_util.get_file_size(apk)
-  #print "Size", apk_size
+  print "Size", apk_size
   odex_f =  apa_util.get_odex_file(apk)
   if odex_f==None:
     apk_size_odex = 0
   else:
     apk_size_odex = apa_util.get_file_size(odex_f)
-    #print "Odex size", apk_size_odex
+    print "Odex size", apk_size_odex
 
   apk_debuggable = apa_util.is_apk_debuggable(apk)
   sha1 = apa_util.sha1sum(apk)
@@ -116,23 +116,6 @@ VALUES
 
   mysql_db_util.dbwork(insertDB)  
 
-def analysis_file_size(buildInfo,base_dir):
-  sql_insert_extra_check = '''INSERT INTO apk_file_info  (apa_release_image_id, apk_file, apk_size)  VALUES (%s,%s,%s)'''
-  system_path  = os.path.join(base_dir,'SYSTEM')  
-  print system_path
-  for root,dirs,files in os.walk(system_path):
-      for filespath in files:
-          full_path = os.path.join(root,filespath)
-          #print "MBT: ", full_path
-          if not os.path.isfile(full_path):
-            continue
-          abs_path = full_path[len(system_path):]
-          size = apa_util.get_file_size(full_path)
-          #print "MBT: ", abs_path, size
-          def insertDB(conn,cur):
-             cur.execute(sql_insert_extra_check, (buildInfo.buildid,abs_path, size))
-          mysql_db_util.dbwork(insertDB)
-
 
 
 def analysis_target_files_detail(buildInfo):
@@ -165,7 +148,6 @@ def analysis_target_files_detail(buildInfo):
   unzipped_target_files_dir = apa_util.unzip_zip(target_files)
   base_dir = unzipped_target_files_dir
 
-  analysis_file_size(buildInfo,unzipped_target_files_dir)
 
   system_apk_list = apa_util.find_all_apk_file(os.path.join(unzipped_target_files_dir,'SYSTEM'))
 
