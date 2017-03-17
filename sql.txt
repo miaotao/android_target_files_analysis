@@ -1,0 +1,45 @@
+CREATE TABLE `apa_release_images` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `path` varchar(1024) DEFAULT NULL,
+  `scan_date` datetime DEFAULT NULL,
+  `ota_model` varchar(255) DEFAULT NULL,
+  `ota_version` varchar(255) DEFAULT NULL,
+  `build_type` varchar(45) DEFAULT NULL,
+  `fingerprint` varchar(255) DEFAULT NULL,
+  `build_date` varchar(255) DEFAULT NULL,
+  `full_build_prop` text,
+  `build_date_utc` int(11) DEFAULT NULL,
+  `is_analysis_done` tinyint(4) DEFAULT NULL,
+  `system_size` bigint(20) DEFAULT '0',
+  `system_used` bigint(20) DEFAULT '0',
+  `file_removed` tinyint(4) DEFAULT '0',
+  `max_file_size_in_system` bigint(20) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `index_ota_model` (`ota_model`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `apk_file_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `apk_file` varchar(1024) NOT NULL DEFAULT 'NA',
+  `package_name` varchar(1024) NOT NULL DEFAULT 'NA',
+  `sign_md5` varchar(1024) NOT NULL DEFAULT 'NA',
+  `sign_sha1` varchar(1024) NOT NULL DEFAULT 'NA',
+  `sign_detail` text,
+  `apk_type` varchar(1024) NOT NULL DEFAULT 'NA',
+  `apa_release_image_id` int(11) NOT NULL,
+  `is_zip_check_ok` tinyint(4) DEFAULT '1',
+  `apk_version_code` varchar(1024) DEFAULT NULL,
+  `apk_version_name` varchar(1024) DEFAULT NULL,
+  `apk_size` int(11) DEFAULT NULL,
+  `apk_size_odex` int(11) DEFAULT NULL,
+  `apk_debuggable` tinyint(4) DEFAULT '0',
+  `apk_md5` varchar(1024) DEFAULT NULL,
+  `apk_sha1` varchar(1024) DEFAULT NULL,
+  `support_langs` text,
+  `target_sdk_version` varchar(45) DEFAULT NULL,
+  `aapt_dump` text,
+  PRIMARY KEY (`id`),
+  KEY `fk_apk_file_info_1_idx` (`apa_release_image_id`),
+  CONSTRAINT `fk_apk_file_info_1` FOREIGN KEY (`apa_release_image_id`) REFERENCES `apa_release_images` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=19388 DEFAULT CHARSET=latin1;
